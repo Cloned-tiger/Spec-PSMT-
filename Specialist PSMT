@@ -1,0 +1,294 @@
+from random import randint
+"""Rolling a random number from 1 to 6"""
+
+global loss
+loss = False
+total = 0
+global earnt
+earnt = 0
+
+def roll():
+    global dice_1
+    global dice_2
+    global dice_3
+
+    if d1_lock == False:
+        dice_1 = randint(1,6)
+    else: 
+        pass
+    if d2_lock == False:
+        dice_2 = randint(1,6)
+    else:
+        pass
+    if d3_lock == False:
+        dice_3 = randint(1,6)
+    else: 
+        pass
+
+car_value = 37400
+dollar_value = 345
+
+d1_lock = False
+d2_lock = False
+d3_lock = False 
+"""Dice locking mechanism for car strategy"""
+def car_strategy():
+    global d1_lock
+    global d2_lock
+    global d3_lock
+    if dice_1 == "Car":
+        d1_lock = True
+    else:
+        d1_lock = False
+    if dice_2 == "Car":
+        d2_lock = True
+    else:
+        d2_lock = False
+    if dice_3 == "Car":
+        d3_lock = True
+    else:
+        d3_lock = False
+
+"""dice locking mechanism for best strategy"""
+def best_strategy():
+    if dice_1 == "Dollar" & dice_2 == "Dollar" & dice_3 == "Dollar":
+        d1_lock = True
+        d2_lock = True
+        d3_lock = True 
+    else:  
+        car_strategy()
+        
+
+""" Converting random numbers to strings to display what the roll is"""
+def assign():
+
+    global dice_2
+    if d2_lock == True:
+        if dice_2 == "Car":
+            pass
+        if dice_2 == "Dollar":
+            pass
+    else:
+        if dice_2 == 1:
+            dice_2 = "Car" 
+        elif dice_2 == 2:
+            dice_2 = "Skull" 
+        else:
+            dice_2 = "Dollar"
+
+    global dice_1
+    if d1_lock == True:
+        if dice_1 == "Car":
+            pass
+        if dice_1 == "Dollar":
+            pass
+    else:
+        if dice_1 == 1:
+            dice_1 = "Car" 
+        elif dice_1 == 2:
+            dice_1 = "Skull" 
+        else:
+            dice_1 = "Dollar"
+
+
+    global dice_3
+    if d3_lock == True:
+        if dice_3 == "Car":
+            pass
+        if dice_3 == "Dollar":
+            pass
+    else:
+        if dice_3 == 1:
+            dice_3 = "Car" 
+        elif dice_3 == 2:
+            dice_3 = "Skull" 
+        else:
+            dice_3 = "Dollar"
+
+""" checking if loss """
+def loss_check1st():
+    global loss
+    loss = False
+    count_skulls = 0
+    if dice_1 == "Skull":
+        count_skulls += 1
+    if dice_2 == "Skull":
+        count_skulls += 1
+    if dice_3 == "Skull":
+        count_skulls += 1
+    if count_skulls >= 2:
+        loss = True
+def loss_check2nd():
+    skull_count = 0
+    global loss
+    d1_skull = False
+    d2_skull = False
+    d3_skull = False
+    if dice_1 == "Skull":
+        d1_skull = True
+    if dice_2 == "Skull":
+        d2_skull = True
+    if dice_3 == "Skull":
+        d3_skull = True
+
+    if d1_lock == False & d2_lock == False & d3_lock == False:
+        loss_check1st()
+    else:
+        if d1_skull == True & d2_skull == True:
+            loss = True
+        if d2_skull == True & d3_skull == True:
+            loss = True
+        if d1_skull == True & d3_skull == True:
+            loss = True 
+    
+def assign_value():
+    d1_car = False
+    d2_car = False
+    d3_car = False
+    global earnt
+    earnt = 0
+    if dice_1 == "Car":
+        d1_car = True
+    if dice_2 == "Car":
+        d2_car = True
+    if dice_3 == "Car":
+        d3_car = True
+    if d1_car == True & d2_car == True & d3_car == True:
+        earnt += car_value
+    if dice_1 == "Dollar":
+        earnt += 345
+    if dice_2 == "Dollar":
+        earnt += 345
+    if dice_3 == "Dollar":
+        earnt += 345
+
+
+
+def test_full():
+    roll()
+    assign()
+    loss_check1st()
+    global earnt
+    global loss
+    if loss == True:
+        print(dice_1, dice_2, dice_3)
+        print("loss")
+        earnt = 0
+    else:
+        print(dice_1, dice_2, dice_3)
+        car_strategy()
+        roll()
+        assign()
+        loss_check2nd()
+        if loss == True:
+            print(dice_1, dice_2, dice_3)
+            print("Loss")
+            earnt = 0
+        else:
+            print(dice_1, dice_2, dice_3)
+            print(earnt)
+            assign_value()
+def test_clean():
+    roll()
+    assign()
+    loss_check1st()
+    global earnt
+    global loss
+    if loss == True:
+        earnt = 0
+    else:
+        car_strategy()
+        roll()
+        assign()
+        loss_check2nd()
+        if loss == True:
+            earnt = 0
+        else:
+            assign_value()
+
+def main_car():
+    global d1_lock
+    global d2_lock
+    global d3_lock
+    d1_lock = False
+    d2_lock = False
+    d3_lock = False
+    roll()
+    assign()
+    loss_check1st()
+    global earnt
+    global loss
+    if loss == True:
+        earnt = 0
+    else:
+        car_strategy()
+        roll()
+        assign()
+        loss_check2nd()
+        if loss == True:
+            earnt = 0
+        else:
+            assign_value()
+
+def main_best():
+    global d1_lock
+    global d2_lock
+    global d3_lock
+    d1_lock = False
+    d2_lock = False
+    d3_lock = False
+    d1_dollar = False
+    d2_dollar = False
+    d3_dollar = False
+    roll()
+    assign()
+    loss_check1st()
+    global earnt
+    global loss
+    global total
+    if dice_1 == "Dollar":
+        d1_dollar == True
+    if dice_2 == "Dollar":
+        d2_dollar == True
+    if dice_3 == "Dollar":
+        d3_dollar == True
+    if loss == True:
+        earnt = 0
+    if d1_dollar == True & d2_dollar == True & d3_dollar == True:
+        earnt =+ 1035
+    else:
+        car_strategy()
+        roll()
+        assign()
+        loss_check2nd()
+        if loss == True:
+            earnt = 0
+        else:
+            assign_value()
+
+
+
+            
+
+
+def best_strat():
+    global total
+    total = 0
+    for i in range(1000000):
+        main_best()
+        total += earnt
+    average = total / 1000000
+    print(average)
+def car_strat():
+    global total
+    total = 0
+    for i in range(1000000):
+        main_car()
+        total += earnt
+    average = total / 1000000
+    print(average)
+def final():
+    best_strat()
+    car_strat()
+
+final()
